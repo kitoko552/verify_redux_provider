@@ -5,9 +5,9 @@ import 'package:redux/redux.dart';
 
 import 'logic_provider.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(StoreProviderApp());
 
-class MyApp extends StatelessWidget {
+class StoreProviderApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,7 +23,9 @@ class MyApp extends StatelessWidget {
 //        child: const ViewModelPage(),
 //        child: const OptimizeViewModelPage(),
 //        child: const ViewModelProviderPage(),
-        child: const LogicProviderPage(),
+//        child: const ViewModelStreamProviderPage(),
+//        child: const LogicProviderPage(),
+        child: const LogicStreamProviderPage(),
       ),
     );
   }

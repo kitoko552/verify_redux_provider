@@ -25,8 +25,7 @@ class ViewModelProviderPage extends StatelessWidget {
         print('ViewModelProviderPage: StoreConnector builder');
         return Provider.value(
           value: viewModel,
-//          child: const ViewModelProviderPageContent(),
-          child: const ViewModelProviderOptimizePageContent(),
+          child: const ViewModelProviderPageContent(),
         );
       },
     );
@@ -39,40 +38,6 @@ class ViewModelProviderPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('ViewModelProviderPageContent: build');
-    final viewModel = Provider.of<ViewModel>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Redux with ViewModel and Provider'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '${viewModel.state.count}',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: viewModel.increment,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class ViewModelProviderOptimizePageContent extends StatelessWidget {
-  const ViewModelProviderOptimizePageContent();
-
-  @override
-  Widget build(BuildContext context) {
-    print('ViewModelProviderOptimizePageContent: build');
     final viewModel = Provider.of<ViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
