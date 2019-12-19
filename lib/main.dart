@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:provider/provider.dart';
 import 'package:redux/redux.dart';
-import 'package:simple_logger/simple_logger.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,8 +19,9 @@ class MyApp extends StatelessWidget {
           reducer,
           initialState: AppState.init(),
         ),
-        child: const ViewModelPage(),
-//        child: const OptimizeViewModelPage(),
+//        child: const ViewModelPage(),
+        child: const OptimizeViewModelPage(),
+//        child: const ViewModelProviderPage(),
       ),
     );
   }
@@ -51,7 +52,7 @@ class ViewModelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logger.severe('ViewModelPage: build');
+    print('ViewModelPage: build');
     return StoreConnector<AppState, ViewModel>(
       distinct: true,
       converter: (store) {
@@ -63,32 +64,44 @@ class ViewModelPage extends StatelessWidget {
         );
       },
       builder: (context, viewModel) {
-        logger.severe('ViewModelPage: StoreConnector builder');
-        return Scaffold(
-          appBar: AppBar(
-            title: Text('Redux with ViewModel'),
-          ),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'You have pushed the button this many times:',
-                ),
-                Text(
-                  '${viewModel.state.count}',
-                  style: Theme.of(context).textTheme.display1,
-                ),
-              ],
-            ),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: viewModel.increment,
-            tooltip: 'Increment',
-            child: Icon(Icons.add),
-          ), // This trailing comma makes auto-formatting nicer for build methods.
-        );
+        print('ViewModelPage: StoreConnector builder');
+        return ViewModelPageContent(viewModel);
       },
+    );
+  }
+}
+
+class ViewModelPageContent extends StatelessWidget {
+  const ViewModelPageContent(this.viewModel);
+
+  final ViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    print('ViewModelPageContent: build');
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Redux with ViewModel'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '${viewModel.state.count}',
+              style: Theme.of(context).textTheme.display1,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: viewModel.increment,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -98,7 +111,7 @@ class OptimizeViewModelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    logger.severe('OptimizeViewModelPage: build');
+    print('OptimizeViewModelPage: build');
     return Scaffold(
       appBar: AppBar(
         title: Text('Redux with ViewModel Optimize'),
@@ -114,8 +127,7 @@ class OptimizeViewModelPage extends StatelessWidget {
               distinct: true,
               converter: (store) => store.state.count,
               builder: (context, count) {
-                logger.severe(
-                    'OptimizeViewModelPage: StoreConnector builder Text');
+                print('OptimizeViewModelPage: StoreConnector builder Text');
                 return Text(
                   '$count',
                   style: Theme.of(context).textTheme.display1,
@@ -131,7 +143,7 @@ class OptimizeViewModelPage extends StatelessWidget {
           store.dispatch(UpdateCount(store.state.count + 1));
         },
         builder: (context, increment) {
-          logger.severe(
+          print(
               'OptimizeViewModelPage: StoreConnector builder FloatingActionButton');
           return FloatingActionButton(
             onPressed: increment,
@@ -140,6 +152,67 @@ class OptimizeViewModelPage extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class ViewModelProviderPage extends StatelessWidget {
+  const ViewModelProviderPage({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    print('ViewModelProviderPage: build');
+    return StoreConnector<AppState, ViewModel>(
+      distinct: true,
+      converter: (store) {
+        return ViewModel(
+          state: store.state,
+          increment: () {
+            store.dispatch(UpdateCount(store.state.count + 1));
+          },
+        );
+      },
+      builder: (context, viewModel) {
+        print('ViewModelProviderPage: StoreConnector builder');
+        return Provider.value(
+          value: viewModel,
+          child: const ViewModelProviderPageContent(),
+        );
+      },
+    );
+  }
+}
+
+class ViewModelProviderPageContent extends StatelessWidget {
+  const ViewModelProviderPageContent();
+
+  @override
+  Widget build(BuildContext context) {
+    print('ViewModelProviderPageContent: build');
+    final viewModel = Provider.of<ViewModel>(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Redux with ViewModel and Provider'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '${viewModel.state.count}',
+              style: Theme.of(context).textTheme.display1,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: viewModel.increment,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -188,10 +261,3 @@ class UpdateCount {
   UpdateCount(this.count);
   final int count;
 }
-
-final logger = SimpleLogger()
-  ..setLevel(
-    kReleaseMode ? Level.OFF : Level.INFO, // リリースビルド時はログを吐かない
-    includeCallerInfo: !kReleaseMode,
-  )
-  ..mode = LoggerMode.print;
