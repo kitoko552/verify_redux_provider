@@ -17,7 +17,6 @@ class LogicProviderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('LogicProviderPage: build');
     final store = StoreProvider.of<AppState>(context);
     return Provider.value(
       value: Logic(
@@ -35,7 +34,6 @@ class LogicProviderPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('LogicProviderPageContent: build');
     final logic = Provider.of<Logic>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
@@ -45,13 +43,10 @@ class LogicProviderPageContent extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
+            Text('You have pushed the button this many times:'),
             StoreConnector<AppState, int>(
               converter: (store) => store.state.count,
               builder: (context, count) {
-                print('LogicProviderPageContent: StoreConnector builder');
                 return Text(
                   '$count',
                   style: Theme.of(context).textTheme.display1,
@@ -75,7 +70,6 @@ class LogicStreamProviderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('LogicStreamProviderPage: build');
     final store = StoreProvider.of<AppState>(context);
     return StreamProvider.value(
       initialData: AppState.init(),
@@ -97,7 +91,6 @@ class LogicStreamProviderPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('LogicStreamProviderPageContent: build');
     final logic = Provider.of<Logic>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
@@ -107,13 +100,10 @@ class LogicStreamProviderPageContent extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
+            Text('You have pushed the button this many times:'),
             Selector<AppState, int>(
               selector: (context, state) => state.count,
               builder: (context, count, child) {
-                print('LogicStreamProviderPageContent: Selector builder');
                 return Text(
                   '$count',
                   style: Theme.of(context).textTheme.display1,

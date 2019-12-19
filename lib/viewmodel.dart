@@ -28,7 +28,6 @@ class ViewModelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('ViewModelPage: build');
     return StoreConnector<AppState, ViewModel>(
       distinct: true,
       converter: (store) {
@@ -40,7 +39,6 @@ class ViewModelPage extends StatelessWidget {
         );
       },
       builder: (context, viewModel) {
-        print('ViewModelPage: StoreConnector builder');
         return ViewModelPageContent(viewModel);
       },
     );
@@ -54,7 +52,6 @@ class ViewModelPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('ViewModelPageContent: build');
     return Scaffold(
       appBar: AppBar(
         title: Text('Redux with ViewModel'),
@@ -63,9 +60,7 @@ class ViewModelPageContent extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
+            Text('You have pushed the button this many times:'),
             Text(
               '${viewModel.state.count}',
               style: Theme.of(context).textTheme.display1,
@@ -87,7 +82,6 @@ class OptimizeViewModelPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('OptimizeViewModelPage: build');
     return Scaffold(
       appBar: AppBar(
         title: Text('Redux with ViewModel Optimize'),
@@ -96,14 +90,11 @@ class OptimizeViewModelPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
+            Text('You have pushed the button this many times:'),
             StoreConnector<AppState, int>(
               distinct: true,
               converter: (store) => store.state.count,
               builder: (context, count) {
-                print('OptimizeViewModelPage: StoreConnector builder Text');
                 return Text(
                   '$count',
                   style: Theme.of(context).textTheme.display1,
@@ -119,9 +110,6 @@ class OptimizeViewModelPage extends StatelessWidget {
           store.dispatch(UpdateCount(store.state.count + 1));
         },
         builder: (context, increment) {
-          print(
-            'OptimizeViewModelPage: StoreConnector builder FloatingActionButton',
-          );
           return FloatingActionButton(
             onPressed: increment,
             tooltip: 'Increment',

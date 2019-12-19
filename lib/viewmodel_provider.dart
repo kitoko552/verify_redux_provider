@@ -10,7 +10,6 @@ class ViewModelProviderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('ViewModelProviderPage: build');
     return StoreConnector<AppState, ViewModel>(
       distinct: true,
       converter: (store) {
@@ -22,7 +21,6 @@ class ViewModelProviderPage extends StatelessWidget {
         );
       },
       builder: (context, viewModel) {
-        print('ViewModelProviderPage: StoreConnector builder');
         return Provider.value(
           value: viewModel,
           child: const ViewModelProviderPageContent(),
@@ -37,7 +35,6 @@ class ViewModelProviderPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('ViewModelProviderPageContent: build');
     final viewModel = Provider.of<ViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
@@ -47,9 +44,7 @@ class ViewModelProviderPageContent extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
+            Text('You have pushed the button this many times:'),
             Selector<ViewModel, int>(
               selector: (context, viewModel) => viewModel.state.count,
               builder: (context, count, child) {
