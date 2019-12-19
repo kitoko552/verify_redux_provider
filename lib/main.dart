@@ -23,7 +23,6 @@ class StoreProviderApp extends StatelessWidget {
 //        child: const ViewModelPage(),
 //        child: const OptimizeViewModelPage(),
 //        child: const ViewModelProviderPage(),
-//        child: const ViewModelStreamProviderPage(),
 //        child: const LogicProviderPage(),
         child: const LogicStreamProviderPage(),
       ),
@@ -35,20 +34,25 @@ class StoreProviderApp extends StatelessWidget {
 class AppState {
   AppState({
     @required this.count,
+    @required this.selectedIndex,
   });
 
   AppState.init()
       : this(
           count: 0,
+          selectedIndex: 0,
         );
 
   final int count;
+  final int selectedIndex;
 
   AppState copyWith({
     int count,
+    int selectedIndex,
   }) {
     return AppState(
       count: count ?? this.count,
+      selectedIndex: selectedIndex ?? this.selectedIndex,
     );
   }
 
@@ -57,21 +61,32 @@ class AppState {
       identical(this, other) ||
       other is AppState &&
           runtimeType == other.runtimeType &&
-          count == other.count;
+          count == other.count &&
+          selectedIndex == other.selectedIndex;
 
   @override
-  int get hashCode => count.hashCode;
+  int get hashCode => count.hashCode ^ selectedIndex.hashCode;
 }
 
 final Reducer<AppState> reducer = combineReducers<AppState>([
   TypedReducer(countReducer),
+  TypedReducer(indexReducer),
 ]);
 
 AppState countReducer(AppState state, UpdateCount action) {
   return state.copyWith(count: action.count);
 }
 
+AppState indexReducer(AppState state, UpdateSelectedIndex action) {
+  return state.copyWith(selectedIndex: action.index);
+}
+
 class UpdateCount {
   UpdateCount(this.count);
   final int count;
+}
+
+class UpdateSelectedIndex {
+  UpdateSelectedIndex(this.index);
+  final int index;
 }
