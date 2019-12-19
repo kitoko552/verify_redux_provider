@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
           initialState: AppState.init(),
         ),
 //        child: const ViewModelPage(),
-        child: const OptimizeViewModelPage(),
-//        child: const ViewModelProviderPage(),
+//        child: const OptimizeViewModelPage(),
+        child: const ViewModelProviderPage(),
       ),
     );
   }
@@ -176,7 +176,8 @@ class ViewModelProviderPage extends StatelessWidget {
         print('ViewModelProviderPage: StoreConnector builder');
         return Provider.value(
           value: viewModel,
-          child: const ViewModelProviderPageContent(),
+//          child: const ViewModelProviderPageContent(),
+          child: const ViewModelProviderOptimizePageContent(),
         );
       },
     );
@@ -204,6 +205,45 @@ class ViewModelProviderPageContent extends StatelessWidget {
             Text(
               '${viewModel.state.count}',
               style: Theme.of(context).textTheme.display1,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: viewModel.increment,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class ViewModelProviderOptimizePageContent extends StatelessWidget {
+  const ViewModelProviderOptimizePageContent();
+
+  @override
+  Widget build(BuildContext context) {
+    print('ViewModelProviderOptimizePageContent: build');
+    final viewModel = Provider.of<ViewModel>(context, listen: false);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Redux with ViewModel and Provider'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            Selector<ViewModel, int>(
+              selector: (context, viewModel) => viewModel.state.count,
+              builder: (context, count, child) {
+                return Text(
+                  '$count',
+                  style: Theme.of(context).textTheme.display1,
+                );
+              },
             ),
           ],
         ),
