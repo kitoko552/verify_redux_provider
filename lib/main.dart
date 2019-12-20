@@ -23,8 +23,8 @@ class StoreProviderApp extends StatelessWidget {
 //        child: const ViewModelPage(),
 //        child: const OptimizeViewModelPage(),
 //        child: const ViewModelProviderPage(),
-//        child: const LogicProviderPage(),
-        child: const LogicStreamProviderPage(),
+        child: const LogicProviderPage(),
+//        child: const LogicStreamProviderPage(),
       ),
     );
   }
