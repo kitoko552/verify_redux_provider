@@ -156,18 +156,19 @@ class LogicStreamProviderScrollPageContent extends StatelessWidget {
                     bottom: 24.0,
                   ),
                   child: Selector<AppState, int>(
-                      selector: (context, state) => state.selectedIndex,
-                      builder: (context, selectedIndex, child) {
-                        print('index selector');
-                        return Text(
-                          'Header: selected $selectedIndex',
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 36.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        );
-                      }),
+                    selector: (context, state) => state.selectedIndex,
+                    builder: (context, selectedIndex, child) {
+                      print('index selector');
+                      return Text(
+                        'Header: selected $selectedIndex',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 36.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
+                  ),
                 );
               } else {
                 return ListTile(
